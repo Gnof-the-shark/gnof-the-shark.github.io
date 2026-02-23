@@ -46,6 +46,7 @@ body{
 .liquidGL > .content{
   position: relative;
   z-index: 3;
+  pointer-events: auto;
 }
 
 /* Card : quasi-transparente, les reflets de bord font tout le travail */
