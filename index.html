@@ -3,83 +3,90 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Coffre-fort local (chiffré)</title>
+  <title>Démo — Gestionnaire de mots de passe</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <h1>Coffre-fort local (chiffré)</h1>
+      <h1>Démo — Gestionnaire de mots de passe</h1>
       <p class="muted">
-        Tout reste sur ton appareil. Sauvegarde via <strong>vault.json</strong> (export chiffré).
+        Ceci est une <strong>démo UI</strong>. Les données affichées sont <strong>factices</strong>.
       </p>
     </header>
 
-    <section class="card">
-      <h2 id="modeTitle">Connexion (déverrouillage local)</h2>
+    <!-- ÉCRAN CONNEXION (factice) -->
+    <section class="card" id="loginCard">
+      <h2>Connexion</h2>
+      <p class="muted">Entre n’importe quel identifiant et mot de passe (démo).</p>
 
       <label class="label">
-        Phrase secrète
-        <input id="passphrase" type="password" placeholder="Au moins 8 caractères" autocomplete="current-password" />
+        Identifiant
+        <input id="loginUser" type="text" placeholder="ex: gnof" autocomplete="username" />
       </label>
 
-      <div class="row" id="lockedActions">
-        <button id="btnCreate">Créer un nouveau coffre</button>
+      <label class="label">
+        Mot de passe
+        <input id="loginPass" type="password" placeholder="********" autocomplete="current-password" />
+      </label>
 
-        <label class="file">
-          Importer vault.json
-          <input id="fileImport" type="file" accept="application/json" />
-        </label>
+      <div class="row">
+        <button id="btnLogin">Se connecter</button>
       </div>
 
-      <div class="row hidden" id="unlockedActions">
-        <button id="btnExport">Exporter vault.json</button>
-        <button class="secondary" id="btnLock">Verrouiller</button>
-      </div>
-
-      <p class="status" id="status"></p>
+      <p class="status" id="loginStatus"></p>
     </section>
 
-    <section class="card hidden" id="vaultArea">
-      <h2>Ajouter une entrée</h2>
+    <!-- ÉCRAN APP (après connexion) -->
+    <section class="card hidden" id="appCard">
+      <div class="topbar">
+        <div>
+          <h2>Mes mots de passe (démo)</h2>
+          <p class="muted" id="hello"></p>
+        </div>
+        <button class="secondary" id="btnLogout">Se déconnecter</button>
+      </div>
 
+      <div class="row">
+        <input id="search" type="text" placeholder="Rechercher (site / identifiant)" />
+        <button class="secondary" id="btnToggle">Masquer/Afficher</button>
+        <button id="btnRefresh">Régénérer des données</button>
+      </div>
+
+      <ul class="list" id="entries"></ul>
+      <p class="muted" id="emptyNote">Aucune entrée.</p>
+
+      <hr class="sep" />
+
+      <h3>Ajouter une entrée factice</h3>
       <div class="grid">
         <label class="label">
           Site
-          <input id="site" type="text" placeholder="ex: gmail.com" />
+          <input id="site" type="text" placeholder="ex: example.com" />
         </label>
         <label class="label">
           Identifiant
-          <input id="identifiant" type="text" placeholder="ex: moi@gmail.com" />
+          <input id="identifiant" type="text" placeholder="ex: user@example.com" />
         </label>
         <label class="label">
-          Mot de passe
-          <input id="motdepasse" type="text" placeholder="ex: ********" />
+          Mot de passe (factice)
+          <input id="motdepasse" type="text" placeholder="ex: Demo-1234" />
         </label>
         <label class="label">
-          Notes (optionnel)
-          <input id="notes" type="text" placeholder="ex: 2FA activé" />
+          Notes
+          <input id="notes" type="text" placeholder="optionnel" />
         </label>
       </div>
-
       <div class="row">
         <button id="btnAdd">Ajouter</button>
-        <button class="secondary" id="btnGen">Générer un mot de passe</button>
+        <button class="secondary" id="btnGen">Générer</button>
       </div>
-    </section>
 
-    <section class="card hidden" id="listArea">
-      <h2>Mes mots de passe</h2>
-      <div class="row">
-        <input id="search" type="text" placeholder="Rechercher (site / identifiant)" />
-        <button class="secondary" id="btnMask">Masquer/Afficher</button>
-      </div>
-      <ul class="list" id="entries"></ul>
-      <p class="muted" id="emptyNote">Aucune entrée pour l’instant.</p>
+      <p class="status" id="appStatus"></p>
     </section>
 
     <footer class="footer muted">
-      Astuce: après chaque modification, clique <strong>Exporter</strong> pour sauvegarder ton coffre.
+      Objectif: apprendre l’UI/UX. Pour un vrai coffre, il faut du chiffrement côté client et des exports/imports.
     </footer>
   </div>
 
