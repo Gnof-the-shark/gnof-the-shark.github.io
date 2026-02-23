@@ -1,4 +1,11 @@
-<!-- ... garde ton head ... -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestionnaire de mots de passe — Démo</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
 <body>
   <div class="container">
     <header class="header">
@@ -11,7 +18,20 @@
       <!-- Content (excluded from lens) -->
       <div class="content">
         <section class="card" id="loginCard">
-          <!-- ... ton contenu login ... -->
+          <h2 style="margin:0 0 4px">Connexion</h2>
+          <p class="muted" style="margin:0 0 16px;font-size:13px">Accédez à votre gestionnaire de mots de passe.</p>
+          <label class="label">
+            Adresse e-mail
+            <input type="email" id="loginEmail" placeholder="exemple@domaine.com" autocomplete="email" />
+          </label>
+          <label class="label">
+            Mot de passe
+            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+          </label>
+          <div id="loginError" class="status" style="display:none;border-color:rgba(255,59,107,.35);background:rgba(255,59,107,.10);color:rgba(255,180,180,.9);"></div>
+          <div class="row">
+            <button id="loginBtn">Se connecter</button>
+          </div>
         </section>
       </div>
     </div>
@@ -19,7 +39,28 @@
     <div class="liquidGL">
       <div class="content">
         <section class="card hidden" id="appCard">
-          <!-- ... ton contenu app ... -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <h2 style="margin:0">Mes mots de passe</h2>
+            <button class="secondary" id="logoutBtn" style="font-size:13px;padding:7px 12px;">Déconnexion</button>
+          </div>
+          <div class="grid">
+            <label class="label">
+              Site / Application
+              <input type="text" id="newSite" placeholder="ex: github.com" />
+            </label>
+            <label class="label">
+              Identifiant
+              <input type="text" id="newLogin" placeholder="ex: mon@email.com" />
+            </label>
+            <label class="label">
+              Mot de passe
+              <input type="password" id="newPass" placeholder="••••••••" />
+            </label>
+          </div>
+          <div class="row">
+            <button id="addBtn">Ajouter</button>
+          </div>
+          <ul class="list" id="passwordList"></ul>
         </section>
       </div>
     </div>
@@ -28,13 +69,10 @@
   </div>
 
   <!-- 1) REQUIRED: html2canvas -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
-    defer
-  ></script>
+  <script src="./html2canvas.min.js" defer></script>
 
   <!-- 2) liquidGL (local) -->
-  <script src="./scripts/liquidGL.js" defer></script>
+  <script src="./liquidGL.js" defer></script>
 
   <!-- 3) ton app -->
   <script src="./app.js" defer></script>
@@ -59,3 +97,4 @@
     });
   </script>
 </body>
+</html>
