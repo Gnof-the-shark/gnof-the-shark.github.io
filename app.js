@@ -123,6 +123,43 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   showLogin();
 });
 
+// --- Export JSON ---
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const data = JSON.stringify(todos, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), {
+    href: url,
+    download: 'todos.json'
+  });
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// --- Import JSON ---
+document.getElementById('importBtn').addEventListener('click', () => {
+  document.getElementById('importFile').click();
+});
+
+document.getElementById('importFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      if (!Array.isArray(parsed)) throw new Error('Format invalide');
+      todos = parsed.filter(t => typeof t.text === 'string').map(t => ({ text: t.text, done: !!t.done }));
+      saveTodos();
+      renderTodos();
+    } catch (err) {
+      alert('Fichier JSON invalide. Vérifiez le format.');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
 function showError(el, msg) {
   el.textContent = msg;
   el.style.display = 'block';

@@ -96,6 +96,12 @@ button.secondary{
   color: var(--txt);
 }
 
+button.icon-btn{
+  font-size: 12px;
+  padding: 6px 11px;
+  font-weight: 500;
+}
+
 button.danger{
   background: rgba(255,59,107,.85);
 }

@@ -41,8 +41,14 @@
         <section class="card hidden" id="appCard">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
             <h2 style="margin:0">Mes tâches</h2>
-            <button class="secondary" id="logoutBtn" style="font-size:13px;padding:7px 14px;">Déconnexion</button>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <button class="secondary icon-btn" id="importBtn" title="Importer un fichier JSON">⬆ Importer</button>
+              <button class="secondary icon-btn" id="exportBtn" title="Télécharger en JSON">⬇ Exporter</button>
+              <button class="secondary icon-btn" id="logoutBtn" style="font-size:13px;padding:7px 14px;">Déconnexion</button>
+            </div>
           </div>
+          <!-- Input fichier caché, déclenché par le bouton Importer -->
+          <input type="file" id="importFile" accept=".json,application/json" style="display:none;" />
           <div class="row" style="margin-top:0;">
             <input type="text" id="newTodo" placeholder="Nouvelle tâche…" style="flex:1;min-width:0;" />
             <button id="addBtn">+ Ajouter</button>
