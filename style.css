@@ -1,0 +1,115 @@
+:root{
+  --bg0:#070A12;
+  --bg1:#0B1220;
+  --txt:#EAF0FF;
+  --muted:rgba(234,240,255,.72);
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
+  color:var(--txt);
+  min-height:100vh;
+
+  /* fond riche => meilleur rendu liquidGL */
+  background:
+    radial-gradient(1000px 700px at 20% 15%, rgba(124,92,255,.35), transparent 60%),
+    radial-gradient(900px 650px at 80% 20%, rgba(34,211,238,.22), transparent 55%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+}
+
+.container{ max-width: 980px; margin: 0 auto; padding: 28px 18px 40px; }
+
+.header h1{ margin:0 0 8px 0; font-size: 28px; }
+.muted{ color: var(--muted); }
+.hidden{ display:none !important; }
+
+/* --- LiquidGL target --- */
+.liquidGL{
+  /* important: l’élément “lentille” doit être au-dessus du fond */
+  position: relative;
+  z-index: 2;
+
+  /* donne une forme à la lentille (zone réfractée) */
+  border-radius: 18px;
+  overflow: hidden;
+
+  /* spacing */
+  margin: 16px 0;
+}
+
+/* contenu au-dessus de la lentille */
+.liquidGL > .content{
+  position: relative;
+  z-index: 3; /* au-dessus du canvas liquidGL */
+}
+
+/* tes cards : plutôt “flat” car la lentille fait déjà l’effet verre */
+.card{
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(0,0,0,.18);
+}
+
+.label{ display:grid; gap:6px; margin: 10px 0; font-size: 13px; color: var(--muted); }
+
+input{
+  padding: 11px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(10,14,28,.45);
+  color: var(--txt);
+  outline: none;
+  font-size: 14px;
+  min-width: 240px;
+}
+
+.row{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; margin-top: 12px; }
+
+button{
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(124,92,255,.85);
+  color: white;
+  cursor:pointer;
+  font-weight: 600;
+}
+
+button.secondary{
+  background: rgba(255,255,255,.10);
+  color: var(--txt);
+}
+
+button.danger{
+  background: rgba(255,59,107,.85);
+}
+
+.status{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(34,211,238,.22);
+  background: rgba(34,211,238,.08);
+  color: rgba(234,240,255,.88);
+  min-height: 20px;
+}
+
+/* liste */
+.grid{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 700px){ .grid{ grid-template-columns: 1fr; } input{ min-width:0; width:100%; } }
+
+.list{ list-style:none; padding:0; margin: 12px 0 0; display:grid; gap:10px; }
+.item{
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(0,0,0,.14);
+}
+
+.footer{ margin-top: 18px; padding: 10px 16px; }
