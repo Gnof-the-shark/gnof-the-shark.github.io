@@ -27,6 +27,19 @@
             Mot de passe
             <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
           </label>
+          <details class="token-details">
+            <summary>🔗 Synchronisation GitHub <span class="muted" style="font-size:11px;">(optionnel)</span></summary>
+            <div style="margin-top:8px;">
+              <label class="label">
+                Token GitHub Personnel
+                <input type="password" id="loginToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" />
+              </label>
+              <p class="muted" style="font-size:11px;margin:4px 0 0;">
+                Crée un token avec permission <code>Contents: Read &amp; Write</code> sur ce dépôt.
+                <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" class="token-link">Créer un token →</a>
+              </p>
+            </div>
+          </details>
           <div id="loginError" class="status" style="display:none;border-color:rgba(255,59,107,.35);background:rgba(255,59,107,.10);color:rgba(255,180,180,.9);"></div>
           <div class="row">
             <button id="loginBtn">Se connecter</button>
@@ -39,12 +52,13 @@
     <div class="liquidGL">
       <div class="content">
         <section class="card hidden" id="appCard">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px;flex-wrap:wrap;">
             <h2 style="margin:0">Mes tâches</h2>
-            <div style="display:flex;gap:6px;align-items:center;">
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <span id="syncStatus" class="sync-status"></span>
               <button class="secondary icon-btn" id="importBtn" title="Importer un fichier JSON">⬆ Importer</button>
               <button class="secondary icon-btn" id="exportBtn" title="Télécharger en JSON">⬇ Exporter</button>
-              <button class="secondary icon-btn" id="logoutBtn" style="font-size:13px;padding:7px 14px;">Déconnexion</button>
+              <button class="secondary icon-btn" id="logoutBtn">Déconnexion</button>
             </div>
           </div>
           <!-- Input fichier caché, déclenché par le bouton Importer -->

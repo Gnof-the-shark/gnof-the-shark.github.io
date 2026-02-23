@@ -174,3 +174,46 @@ button.danger{
 }
 
 .footer{ margin-top: 18px; padding: 10px 16px; font-size: 12px; }
+
+/* --- GitHub token details --- */
+.token-details{
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,.03);
+}
+.token-details summary{
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  list-style: none;
+  user-select: none;
+}
+.token-details summary::-webkit-details-marker{ display:none; }
+.token-details[open] summary{ color: var(--txt); margin-bottom: 2px; }
+.token-link{
+  color: rgba(124,92,255,.9);
+  text-decoration: none;
+  margin-left: 4px;
+}
+.token-link:hover{ text-decoration: underline; }
+
+code{
+  font-family: monospace;
+  font-size: 10px;
+  background: rgba(255,255,255,.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* --- Badge statut sync --- */
+.sync-status{
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.06);
+  transition: color .3s;
+  white-space: nowrap;
+}
