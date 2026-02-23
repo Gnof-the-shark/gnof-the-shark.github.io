@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Liste de tâches</title>
+  <title>Ma liste de tâches</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <h1>Démo — Gestionnaire de mots de passe</h1>
-      <p class="muted">Ceci est une démo UI. Données factices.</p>
+      <h1>Ma liste de tâches</h1>
+      <p class="muted">Connectez-vous pour accéder à vos tâches.</p>
     </header>
 
-    <!-- Target (glassified) -->
+    <!-- Carte connexion -->
     <div class="liquidGL">
-      <!-- Content (excluded from lens) -->
       <div class="content">
         <section class="card" id="loginCard">
           <h2 style="margin:0 0 4px">Connexion</h2>
-          <p class="muted" style="margin:0 0 16px;font-size:13px">Accédez à votre gestionnaire de mots de passe.</p>
+          <p class="muted" style="margin:0 0 16px;font-size:13px">Accédez à votre liste de tâches.</p>
           <label class="label">
             Adresse e-mail
             <input type="email" id="loginEmail" placeholder="exemple@domaine.com" autocomplete="email" />
@@ -36,36 +35,24 @@
       </div>
     </div>
 
+    <!-- Carte todo list -->
     <div class="liquidGL">
       <div class="content">
         <section class="card hidden" id="appCard">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-            <h2 style="margin:0">Mes mots de passe</h2>
-            <button class="secondary" id="logoutBtn" style="font-size:13px;padding:7px 12px;">Déconnexion</button>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="margin:0">Mes tâches</h2>
+            <button class="secondary" id="logoutBtn" style="font-size:13px;padding:7px 14px;">Déconnexion</button>
           </div>
-          <div class="grid">
-            <label class="label">
-              Site / Application
-              <input type="text" id="newSite" placeholder="ex: github.com" />
-            </label>
-            <label class="label">
-              Identifiant
-              <input type="text" id="newLogin" placeholder="ex: mon@email.com" />
-            </label>
-            <label class="label">
-              Mot de passe
-              <input type="password" id="newPass" placeholder="••••••••" />
-            </label>
+          <div class="row" style="margin-top:0;">
+            <input type="text" id="newTodo" placeholder="Nouvelle tâche…" style="flex:1;min-width:0;" />
+            <button id="addBtn">+ Ajouter</button>
           </div>
-          <div class="row">
-            <button id="addBtn">Ajouter</button>
-          </div>
-          <ul class="list" id="passwordList"></ul>
+          <ul class="list" id="todoList"></ul>
         </section>
       </div>
     </div>
 
-    <footer class="footer muted">Objectif: UI/UX.</footer>
+    <footer class="footer muted">Les tâches sont sauvegardées automatiquement.</footer>
   </div>
 
   <!-- 1) REQUIRED: html2canvas -->
@@ -74,25 +61,25 @@
   <!-- 2) liquidGL (local) -->
   <script src="./liquidGL.js" defer></script>
 
-  <!-- 3) ton app -->
+  <!-- 3) app -->
   <script src="./app.js" defer></script>
 
-  <!-- 4) init liquidGL -->
+  <!-- 4) init liquidGL — paramètres iOS 26 Liquid Glass -->
   <script defer>
     window.addEventListener("DOMContentLoaded", () => {
-      // initialise sur tous les .liquidGL
       liquidGL({
         target: ".liquidGL",
         snapshot: "body",
         resolution: 2,
-        refraction: 0.012,
-        bevelDepth: 0.08,
-        bevelWidth: 0.12,
-        frost: 2,
-        shadow: true,
+        refraction: 0.04,
+        bevelDepth: 0.24,
+        bevelWidth: 0.20,
+        frost: 8,
+        shadow: false,
         specular: true,
         reveal: "fade",
-        tilt: false
+        tilt: true,
+        tiltFactor: 8
       });
     });
   </script>
