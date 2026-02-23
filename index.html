@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Coffre-fort local (chiffré)</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Coffre-fort local (chiffré)</h1>
+      <p class="muted">
+        Tout reste sur ton appareil. Sauvegarde via <strong>vault.json</strong> (export chiffré).
+      </p>
+    </header>
+
+    <section class="card">
+      <h2 id="modeTitle">Connexion (déverrouillage local)</h2>
+
+      <label class="label">
+        Phrase secrète
+        <input id="passphrase" type="password" placeholder="Au moins 8 caractères" autocomplete="current-password" />
+      </label>
+
+      <div class="row" id="lockedActions">
+        <button id="btnCreate">Créer un nouveau coffre</button>
+
+        <label class="file">
+          Importer vault.json
+          <input id="fileImport" type="file" accept="application/json" />
+        </label>
+      </div>
+
+      <div class="row hidden" id="unlockedActions">
+        <button id="btnExport">Exporter vault.json</button>
+        <button class="secondary" id="btnLock">Verrouiller</button>
+      </div>
+
+      <p class="status" id="status"></p>
+    </section>
+
+    <section class="card hidden" id="vaultArea">
+      <h2>Ajouter une entrée</h2>
+
+      <div class="grid">
+        <label class="label">
+          Site
+          <input id="site" type="text" placeholder="ex: gmail.com" />
+        </label>
+        <label class="label">
+          Identifiant
+          <input id="identifiant" type="text" placeholder="ex: moi@gmail.com" />
+        </label>
+        <label class="label">
+          Mot de passe
+          <input id="motdepasse" type="text" placeholder="ex: ********" />
+        </label>
+        <label class="label">
+          Notes (optionnel)
+          <input id="notes" type="text" placeholder="ex: 2FA activé" />
+        </label>
+      </div>
+
+      <div class="row">
+        <button id="btnAdd">Ajouter</button>
+        <button class="secondary" id="btnGen">Générer un mot de passe</button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="listArea">
+      <h2>Mes mots de passe</h2>
+      <div class="row">
+        <input id="search" type="text" placeholder="Rechercher (site / identifiant)" />
+        <button class="secondary" id="btnMask">Masquer/Afficher</button>
+      </div>
+      <ul class="list" id="entries"></ul>
+      <p class="muted" id="emptyNote">Aucune entrée pour l’instant.</p>
+    </section>
+
+    <footer class="footer muted">
+      Astuce: après chaque modification, clique <strong>Exporter</strong> pour sauvegarder ton coffre.
+    </footer>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
