@@ -57,10 +57,11 @@ function saveTodosLocal() {
 // ─── GitHub API ───────────────────────────────────────────────────────────────
 async function githubGet() {
   const token = getToken();
-  if (!token) return null;
+  const headers = { Accept: 'application/vnd.github+json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
   const res = await fetch(
     `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
-    { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+    { headers }
   );
   if (res.status === 404) { ghFileSha = null; return []; }
   if (!res.ok) throw new Error(`GitHub ${res.status}`);
@@ -201,21 +202,18 @@ async function showApp() {
   document.getElementById('appCard').closest('.liquidGL').classList.remove('hidden');
   document.getElementById('appCard').classList.remove('hidden');
 
-  if (getToken()) {
-    setSyncStatus('pending');
-    try {
-      const ghTodos = await githubGet();
-      if (ghTodos !== null) {
-        todos = ghTodos;
-        saveTodosLocal();
-        setSyncStatus('saved');
-        renderTodos();
-        return;
-      }
-    } catch (e) {
-      console.warn('GitHub load failed, using localStorage:', e);
-      setSyncStatus('error');
-    }
+  if (getToken()) setSyncStatus('pending');
+  try {
+    const ghTodos = await githubGet();
+    if (!Array.isArray(ghTodos)) throw new Error('Format inattendu depuis GitHub');
+    todos = ghTodos;
+    saveTodosLocal();
+    setSyncStatus(getToken() ? 'saved' : '');
+    renderTodos();
+    return;
+  } catch (e) {
+    console.warn('GitHub load failed, using localStorage:', e);
+    if (getToken()) setSyncStatus('error');
   }
   loadTodosLocal();
   renderTodos();
