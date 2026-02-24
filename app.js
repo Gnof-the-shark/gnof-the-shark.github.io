@@ -3,6 +3,12 @@ const STORAGE_TODOS   = 'gnof_todos';
 const STORAGE_SESSION = 'gnof_session';
 const STORAGE_TOKEN   = 'gnof_gh_token';
 
+// Token de déploiement injecté par GitHub Actions (jamais en clair dans le dépôt).
+// Permet la synchronisation GitHub sans que l'utilisateur ait à fournir son propre token.
+// Pour l'activer : ajoutez le secret GH_DEPLOY_TOKEN dans les paramètres du dépôt,
+// puis relancez le workflow GitHub Actions.
+const GH_DEPLOY_TOKEN = '';
+
 // ─── Identifiants autorisés (SHA-256 — jamais en clair dans le code) ──────────
 // Pour changer les identifiants : mettez à jour les secrets GitHub AUTH_EMAIL_HASH
 // et AUTH_PASS_HASH, puis relancez le workflow GitHub Actions.
@@ -19,7 +25,8 @@ let ghFileSha = null;  // SHA requis par l'API GitHub pour les mises à jour
 let syncTimer = null;  // timer debounce pour limiter les appels API
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-function getToken() { return localStorage.getItem(STORAGE_TOKEN) || ''; }
+// Priorité : token saisi manuellement > token de déploiement intégré
+function getToken() { return localStorage.getItem(STORAGE_TOKEN) || GH_DEPLOY_TOKEN || ''; }
 
 // Encodage base64 UTF-8 sans les fonctions dépréciées unescape/escape
 function b64Encode(str) {
@@ -293,6 +300,12 @@ document.getElementById('importFile').addEventListener('change', (e) => {
 function showError(el, msg) {
   el.textContent = msg;
   el.style.display = 'block';
+}
+
+// ─── Masque le champ token si un token de déploiement est déjà intégré ───────
+if (GH_DEPLOY_TOKEN) {
+  const tokenDetails = document.querySelector('.token-details');
+  if (tokenDetails) tokenDetails.style.display = 'none';
 }
 
 // ─── Restauration automatique de session ─────────────────────────────────────
