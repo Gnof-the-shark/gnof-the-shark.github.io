@@ -16,9 +16,10 @@ const AUTH_EMAIL_HASH = '2d946c857aa07c0c58862ebb2146f91792538fc6cef8be9f0040ba2
 const AUTH_PASS_HASH  = 'ff98ef67b552532453d1ad8b1912a776ab1b30bf3814fa009b8ffe3c3e5b7efe';
 
 // GitHub API — tous les commits vont dans ce dépôt
-const GH_OWNER = 'Gnof-the-shark';
-const GH_REPO  = 'gnof-the-shark.github.io';
-const GH_FILE  = 'todos.json';
+const GH_OWNER  = 'Gnof-the-shark';
+const GH_REPO   = 'gnof-the-shark.github.io';
+const GH_FILE   = 'todos.json';
+const GH_BRANCH = 'main';
 
 let todos     = [];
 let ghFileSha = null;  // SHA requis par l'API GitHub pour les mises à jour
@@ -57,8 +58,18 @@ function saveTodosLocal() {
 // ─── GitHub API ───────────────────────────────────────────────────────────────
 async function githubGet() {
   const token = getToken();
-  const headers = { Accept: 'application/vnd.github+json' };
-  if (token) headers.Authorization = `Bearer ${token}`;
+  if (!token) {
+    // Lecture publique sans token — URL raw, aucune authentification requise
+    const res = await fetch(
+      `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}`,
+      { cache: 'no-store' }
+    );
+    if (res.status === 404) { ghFileSha = null; return []; }
+    if (!res.ok) throw new Error(`GitHub ${res.status}`);
+    ghFileSha = null; // SHA indisponible via URL raw ; récupéré lors du premier githubPut
+    return res.json();
+  }
+  const headers = { Accept: 'application/vnd.github+json', Authorization: `Bearer ${token}` };
   const res = await fetch(
     `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
     { headers }
@@ -91,9 +102,10 @@ async function githubPut(retryCount = 0) {
       body: JSON.stringify(body)
     }
   );
-  if (res.status === 409) {
-    // Conflit SHA (modif concurrente) — re-fetch du SHA et retry (max 3 fois)
-    if (retryCount >= 3) throw new Error('GitHub 409: conflit SHA persistant');
+  if (res.status === 409 || res.status === 422) {
+    // 409 : conflit SHA (modif concurrente) ; 422 : SHA manquant (lu via URL raw)
+    // Dans les deux cas : re-fetch du SHA via l'API et retry (max 3 fois)
+    if (retryCount >= 3) throw new Error(`GitHub ${res.status}: conflit SHA persistant`);
     await githubGet();
     return githubPut(retryCount + 1);
   }
