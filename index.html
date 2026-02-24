@@ -49,31 +49,26 @@
       </div>
     </div>
 
-    <!-- Carte todo list -->
+    <!-- Carte codes de récupération -->
     <div class="liquidGL">
       <div class="content">
         <section class="card hidden" id="appCard">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px;flex-wrap:wrap;">
-            <h2 style="margin:0">Mes tâches</h2>
-            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-              <span id="syncStatus" class="sync-status"></span>
-              <button class="secondary icon-btn" id="importBtn" title="Importer un fichier JSON">⬆ Importer</button>
-              <button class="secondary icon-btn" id="exportBtn" title="Télécharger en JSON">⬇ Exporter</button>
-              <button class="secondary icon-btn" id="logoutBtn">Déconnexion</button>
-            </div>
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+            <button class="secondary icon-btn" id="logoutBtn">Déconnexion</button>
           </div>
-          <!-- Input fichier caché, déclenché par le bouton Importer -->
-          <input type="file" id="importFile" accept=".json,application/json" style="display:none;" />
-          <div class="row" style="margin-top:0;">
-            <input type="text" id="newTodo" placeholder="Nouvelle tâche…" style="flex:1;min-width:0;" />
-            <button id="addBtn">+ Ajouter</button>
-          </div>
-          <ul class="list" id="todoList"></ul>
+          <pre style="font-family:monospace;font-size:16px;line-height:1.8;text-align:center;margin:0;">0419 4843
+3740 3041
+1112 6175
+9960 8237
+9514 7698
+6289 0519
+4745 2966
+6341 5635
+5099 1922
+9334 2070</pre>
         </section>
       </div>
     </div>
-
-    <footer class="footer muted">Les tâches sont sauvegardées automatiquement.</footer>
   </div>
 
   <!-- 1) REQUIRED: html2canvas -->

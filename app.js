@@ -191,44 +191,11 @@ function renderTodos() {
   });
 }
 
-// ─── Ajouter ─────────────────────────────────────────────────────────────────
-function addTodo() {
-  const input = document.getElementById('newTodo');
-  const text = input.value.trim();
-  if (!text) return;
-  todos.push({ text, done: false });
-  saveTodos();
-  renderTodos();
-  input.value = '';
-  input.focus();
-}
-
-document.getElementById('addBtn').addEventListener('click', addTodo);
-document.getElementById('newTodo').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') addTodo();
-});
-
 // ─── Affichage app ───────────────────────────────────────────────────────────
-async function showApp() {
+function showApp() {
   document.getElementById('loginCard').closest('.liquidGL').classList.add('hidden');
   document.getElementById('appCard').closest('.liquidGL').classList.remove('hidden');
   document.getElementById('appCard').classList.remove('hidden');
-
-  if (getToken()) setSyncStatus('pending');
-  try {
-    const ghTodos = await githubGet();
-    if (!Array.isArray(ghTodos)) throw new Error('Format inattendu depuis GitHub');
-    todos = ghTodos;
-    saveTodosLocal();
-    setSyncStatus(getToken() ? 'saved' : '');
-    renderTodos();
-    return;
-  } catch (e) {
-    console.warn('GitHub load failed, using localStorage:', e);
-    if (getToken()) setSyncStatus('error');
-  }
-  loadTodosLocal();
-  renderTodos();
 }
 
 function showLogin() {
@@ -271,39 +238,6 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   document.getElementById('loginToken').value    = '';
   document.getElementById('loginError').style.display = 'none';
   showLogin();
-});
-
-// ─── Export JSON ─────────────────────────────────────────────────────────────
-document.getElementById('exportBtn').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify(todos, null, 2)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = Object.assign(document.createElement('a'), { href: url, download: 'todos.json' });
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-// ─── Import JSON ─────────────────────────────────────────────────────────────
-document.getElementById('importBtn').addEventListener('click', () => {
-  document.getElementById('importFile').click();
-});
-
-document.getElementById('importFile').addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try {
-      const parsed = JSON.parse(ev.target.result);
-      if (!Array.isArray(parsed)) throw new Error('Format invalide');
-      todos = parsed.filter(t => typeof t.text === 'string').map(t => ({ text: t.text, done: !!t.done }));
-      saveTodos();
-      renderTodos();
-    } catch (err) {
-      alert(`Fichier JSON invalide : ${err.message}`);
-    }
-    e.target.value = '';
-  };
-  reader.readAsText(file);
 });
 
 // ─── Utilitaire ──────────────────────────────────────────────────────────────
