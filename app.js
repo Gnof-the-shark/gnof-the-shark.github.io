@@ -3,6 +3,12 @@ const STORAGE_TODOS   = 'gnof_todos';
 const STORAGE_SESSION = 'gnof_session';
 const STORAGE_TOKEN   = 'gnof_gh_token';
 
+// ─── Identifiants autorisés (SHA-256 — jamais en clair dans le code) ──────────
+// Pour changer les identifiants : mettez à jour les secrets GitHub AUTH_EMAIL_HASH
+// et AUTH_PASS_HASH, puis relancez le workflow GitHub Actions.
+const AUTH_EMAIL_HASH = '2d946c857aa07c0c58862ebb2146f91792538fc6cef8be9f0040ba2164452d3f';
+const AUTH_PASS_HASH  = 'ff98ef67b552532453d1ad8b1912a776ab1b30bf3814fa009b8ffe3c3e5b7efe';
+
 // GitHub API — tous les commits vont dans ce dépôt
 const GH_OWNER = 'Gnof-the-shark';
 const GH_REPO  = 'gnof-the-shark.github.io';
@@ -23,6 +29,12 @@ function b64Encode(str) {
 function b64Decode(b64) {
   const bytes = Uint8Array.from(atob(b64.replace(/\s/g, '')), c => c.charCodeAt(0));
   return new TextDecoder().decode(bytes);
+}
+
+// SHA-256 via Web Crypto API (natif, aucune dépendance)
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 // ─── Persistance locale ───────────────────────────────────────────────────────
@@ -209,7 +221,7 @@ function showLogin() {
 }
 
 // ─── Connexion ───────────────────────────────────────────────────────────────
-document.getElementById('loginBtn').addEventListener('click', () => {
+document.getElementById('loginBtn').addEventListener('click', async () => {
   const email    = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   const token    = document.getElementById('loginToken').value.trim();
@@ -218,8 +230,10 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   if (!email || !password) {
     showError(errorEl, 'Veuillez remplir tous les champs.'); return;
   }
-  if (password.length < 4) {
-    showError(errorEl, 'Le mot de passe doit contenir au moins 4 caractères.'); return;
+
+  const [eHash, pHash] = await Promise.all([sha256(email.toLowerCase()), sha256(password)]);
+  if (eHash !== AUTH_EMAIL_HASH || pHash !== AUTH_PASS_HASH) {
+    showError(errorEl, 'Identifiants incorrects.'); return;
   }
 
   errorEl.style.display = 'none';

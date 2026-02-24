@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Rotation des identifiants via GitHub Secrets ───────────────────────
+      # Pour changer l'email ou le mot de passe autorisés :
+      #   1. Calculez (l'email DOIT être en minuscules) :
+      #        echo -n "nouvel_email_en_minuscules" | sha256sum
+      #        echo -n "nouveau_mot_de_passe" | sha256sum
+      #   2. Ajoutez / mettez à jour les secrets du dépôt :
+      #        AUTH_EMAIL_HASH  (sha256 de l'adresse e-mail en minuscules)
+      #        AUTH_PASS_HASH   (sha256 du mot de passe)
+      #   3. Poussez un commit ou relancez ce workflow.
+      - name: Inject credential hashes from secrets (if provided)
+        if: ${{ secrets.AUTH_EMAIL_HASH != '' && secrets.AUTH_PASS_HASH != '' }}
+        env:
+          AUTH_EMAIL_HASH: ${{ secrets.AUTH_EMAIL_HASH }}
+          AUTH_PASS_HASH: ${{ secrets.AUTH_PASS_HASH }}
+        run: |
+          sed -i "s|const AUTH_EMAIL_HASH = '[^']*'|const AUTH_EMAIL_HASH = '$AUTH_EMAIL_HASH'|" app.js
+          sed -i "s|const AUTH_PASS_HASH  = '[^']*'|const AUTH_PASS_HASH  = '$AUTH_PASS_HASH'|" app.js
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
