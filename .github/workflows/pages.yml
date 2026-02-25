@@ -39,8 +39,8 @@ jobs:
           AUTH_EMAIL_HASH: ${{ secrets.AUTH_EMAIL_HASH }}
           AUTH_PASS_HASH: ${{ secrets.AUTH_PASS_HASH }}
         run: |
-          sed -i "s|export const AUTH_EMAIL_HASH = '[^']*'|export const AUTH_EMAIL_HASH = '$AUTH_EMAIL_HASH'|" src/config.js
-          sed -i "s|export const AUTH_PASS_HASH  = '[^']*'|export const AUTH_PASS_HASH  = '$AUTH_PASS_HASH'|" src/config.js
+          sed -i "s|const AUTH_EMAIL_HASH = '[^']*'|const AUTH_EMAIL_HASH = '$AUTH_EMAIL_HASH'|" app.js
+          sed -i "s|const AUTH_PASS_HASH  = '[^']*'|const AUTH_PASS_HASH  = '$AUTH_PASS_HASH'|" app.js
 
       # ── Token de déploiement GitHub (synchronisation automatique des tâches) ──
       # Permet à l'app de sauvegarder les tâches sur GitHub sans que l'utilisateur
@@ -52,19 +52,7 @@ jobs:
         env:
           GH_DEPLOY_TOKEN: ${{ secrets.GH_DEPLOY_TOKEN }}
         run: |
-          sed -i "s|export const GH_DEPLOY_TOKEN = ''|export const GH_DEPLOY_TOKEN = '$GH_DEPLOY_TOKEN'|" src/config.js
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
+          sed -i "s|const GH_DEPLOY_TOKEN = ''|const GH_DEPLOY_TOKEN = '$GH_DEPLOY_TOKEN'|" app.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -72,7 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
