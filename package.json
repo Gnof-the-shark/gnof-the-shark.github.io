@@ -1,0 +1,31 @@
+{
+  "name": "gnof-the-shark.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gnof-the-shark/gnof-the-shark.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gnof-the-shark/gnof-the-shark.github.io/issues"
+  },
+  "homepage": "https://github.com/Gnof-the-shark/gnof-the-shark.github.io#readme",
+  "dependencies": {
+    "liquid-glass-react": "^1.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.4",
+    "vite": "^7.3.1"
+  }
+}
